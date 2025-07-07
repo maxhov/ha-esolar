@@ -20,7 +20,7 @@ from .const import (
     CONF_PV_GRID_DATA,
     DOMAIN,
 )
-from .esolar import esolar_web_autenticate, web_get_plant
+from .esolar import esolar_web_authenticate, web_get_plant_list
 
 CONF_TITLE = "SAJ eSolar"
 
@@ -28,7 +28,7 @@ _LOGGER = logging.getLogger(__name__)
 
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
-        vol.Required(CONF_REGION, default="eu"): vol.In(["eu","in"]),
+        vol.Required(CONF_REGION, default="eu"): vol.In(["eu","in", "cn"]),
         vol.Required(CONF_USERNAME): str,
         vol.Required(CONF_PASSWORD): str,
     }
@@ -43,10 +43,10 @@ class ESolarHub:
         self.plant_list: dict[str, Any] = {}
 
     def auth_and_get_solar_plants(self, region: str, username: str, password: str) -> bool:
-        """Download and list availablse inverters."""
+        """Download and list available inverters."""
         try:
-            session = esolar_web_autenticate(region, username, password)
-            self.plant_list = web_get_plant(region, session).get("plantList")
+            session = esolar_web_authenticate(region, username, password)
+            self.plant_list = web_get_plant_list(region, session).get("plantList")
         except requests.exceptions.HTTPError:
             _LOGGER.error("Login: HTTPError")
             return False
@@ -82,7 +82,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
     def __init__(self):
-        """Set up the the config flow."""
+        """Set up the config flow."""
         self.sites = {}
         self.data = {}
 
