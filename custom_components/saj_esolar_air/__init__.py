@@ -523,7 +523,8 @@ def get_data(
         if "error" in plant_info:
             raise UnknownError(plant_info["error"])
 
-        if plant_info.get("status") != "success":
+        if len(plant_info) == 0:
             _LOGGER.exception("Unexpected response: %s", plant_info)
             raise UnknownError
-    return cast(ESolarResponse, plant_info)
+
+    return cast(ESolarResponse, {"plantList": plant_info})
