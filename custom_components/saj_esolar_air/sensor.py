@@ -340,9 +340,7 @@ class ESolarSensorPlant(ESolarSensor):
             if plant["plantName"] == self._plant_name:
                 # Setup dynamic attributes
                 if (plant["type"]) == 0:
-                    self._attr_extra_state_attributes[P_INCOME] = plant[
-                        "income"
-                    ]
+                    self._attr_extra_state_attributes[P_INCOME] = plant["peakList"]["overview"]["totalIncome"]
                 else:
                     self._attr_extra_state_attributes[P_INCOME] = None
                 self._attr_extra_state_attributes[P_CO2] = plant[

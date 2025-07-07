@@ -317,7 +317,8 @@ def web_get_plant_grid_overview_info(region, token, plants):
                 # if (overview_info["type"]) == 0:
                 peak_pow.append({
                     "devicesn": inverter,
-                    "peakPower": overview_info["peakPower"]
+                    "peakPower": overview_info["peakPower"],
+                    "overviewInfo": overview_info
                 })
                 plant.update({"peakList": peak_pow})
                 # TODO: Not sure how to fix this and if this is (still) relevant
