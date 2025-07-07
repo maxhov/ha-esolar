@@ -344,15 +344,20 @@ class ESolarSensorPlant(ESolarSensor):
                 else:
                     self._attr_extra_state_attributes[P_INCOME] = None
 
-                if plant["totalReduceCo2"]:
+                try:
                     self._attr_extra_state_attributes[P_CO2] = plant[
                         "totalReduceCo2"
                     ]
+                except KeyError:
+                    self._attr_extra_state_attributes[P_CO2] = None
 
-                if plant["totalPlantTreeNum"]:
+                try:
                     self._attr_extra_state_attributes[P_TREES] = plant[
                         "totalPlantTreeNum"
                     ]
+                except KeyError:
+                    self._attr_extra_state_attributes[P_TREES] = None
+
                 self._attr_extra_state_attributes[P_TOTAL_E] = plant["totalEnergy"]
 
                 # Setup state
