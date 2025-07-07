@@ -107,7 +107,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             _LOGGER.exception("Unexpected exception")
             errors["base"] = "unknown"
         else:
-            self.sites = [site["plantname"] for site in info["plant_list"]]
+            self.sites = [site["plantName"] for site in info["plant_list"]]
             if len(self.sites) == 1:
                 return self.async_create_entry(
                     title=CONF_TITLE,
