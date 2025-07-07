@@ -416,7 +416,7 @@ class ESolarSensorPlantTotalEnergy(ESolarSensor):
                     plant["todayEnergy"]
                 )
                 self._attr_extra_state_attributes[P_CURRENT_POWER] = float(
-                    plant["nowPower"]
+                    plant["powerNow"]
                 )
                 if plant["type"] == 0:
                     peak_power = float(0.0)
