@@ -99,6 +99,9 @@ def esolar_web_authenticate(region, username, password):
 
     response = session.post(
         base_url_web(region) + "/sys/login",
+        headers={"Content-Type": "application/x-www-form-urlencoded",
+                 "Accept": "application/json",
+                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.3"},
         data={
             "lang": lang,
             "username": username,
@@ -138,9 +141,6 @@ def web_get_plant_list(region, token, requested_plant_list=None):
 
     output_plant_list = []
     session = requests.Session()
-    session.headers.update({
-        "Authorization": "Bearer " + token,
-    })
     page_size = 100
     lang = "en"
     project_name = "elekeeper"
@@ -152,6 +152,9 @@ def web_get_plant_list(region, token, requested_plant_list=None):
 
     response = session.get(
         base_url_web(region) + "/monitor/plant/getPlantList",
+        headers={"Authorization": "Bearer " + token,
+                 "Accept": "application/json",
+                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.3"},
         params={
             "pageSize": page_size,
             "pageNo": 1,
@@ -210,7 +213,9 @@ def web_get_plant_info(region, token, plants):
             session = requests.Session()
             response = session.get(
                 base_url_web(region) + "/monitor/plant/getOnePlantInfo",
-                headers={"Authorization": "Bearer " + token},
+                headers={"Authorization": "Bearer " + token,
+                         "Accept": "application/json",
+                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.3"},
                 params={
                     "plantUid": plant_uid,
                     "appProjectName": project_name,
@@ -273,7 +278,9 @@ def web_get_plant_grid_overview_info(region, token, plants):
             response = session.get(
                 base_url_web(
                     region) + "/monitor/home/getPlantGridOverviewInfo",
-                headers={"Authorization": "Bearer " + token},
+                headers={"Authorization": "Bearer " + token,
+                         "Accept": "application/json",
+                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.3"},
                 params={
                     "plantUid": plant_uid,
                     "appProjectName": project_name,
