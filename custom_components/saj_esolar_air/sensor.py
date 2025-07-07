@@ -120,7 +120,7 @@ async def async_setup_entry(
     """Set up the eSolar sensor."""
     coordinator: ESolarCoordinator = hass.data[DOMAIN][entry.entry_id]
     entities: list[ESolarSensor] = []
-    esolar_data: ESolarResponse = coordinator.data
+    esolar_data = coordinator.data
     my_plants = entry.options.get(CONF_MONITORED_SITES)
     use_inverter_sensors = entry.options.get(CONF_INVERTER_SENSORS)
     use_pv_grid_attributes = entry.options.get(CONF_PV_GRID_DATA)
@@ -129,7 +129,7 @@ async def async_setup_entry(
         return
 
     for enabled_plant in my_plants:
-        for plant in esolar_data["plantList"]:
+        for plant in esolar_data:
             if plant["plantName"] != enabled_plant:
                 continue
 
@@ -302,7 +302,7 @@ class ESolarSensorPlant(ESolarSensor):
 
     async def async_update(self) -> None:
         """Get the latest data and updates the states."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup static attributes
                 self._attr_available = True
@@ -335,7 +335,7 @@ class ESolarSensorPlant(ESolarSensor):
     @property
     def native_value(self) -> str | None:
         """Return sensor state."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup dynamic attributes
                 if (plant["plantDetail"]["type"]) == 0:
@@ -397,7 +397,7 @@ class ESolarSensorPlantTotalEnergy(ESolarSensor):
 
     async def async_update(self) -> None:
         """Get the latest data and updates the states."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup static attributes
                 self._attr_available = True
@@ -410,7 +410,7 @@ class ESolarSensorPlantTotalEnergy(ESolarSensor):
     @property
     def native_value(self) -> float | None:
         """Return sensor state."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup dynamic attributes
                 self._attr_extra_state_attributes[P_TODAY_E] = float(
@@ -463,7 +463,7 @@ class ESolarSensorPlantBatteryBuyEnergy(ESolarSensor):
 
     async def async_update(self) -> None:
         """Get the latest data and updates the states."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup static attributes
                 self._attr_available = True
@@ -479,7 +479,7 @@ class ESolarSensorPlantBatteryBuyEnergy(ESolarSensor):
     @property
     def native_value(self) -> float | None:
         """Return sensor state."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup state
                 if plant["plantDetail"]["totalBuyElec"] is not None:
@@ -517,7 +517,7 @@ class ESolarSensorPlantBatterySellEnergy(ESolarSensor):
 
     async def async_update(self) -> None:
         """Get the latest data and updates the states."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup static attributes
                 self._attr_available = True
@@ -533,7 +533,7 @@ class ESolarSensorPlantBatterySellEnergy(ESolarSensor):
     @property
     def native_value(self) -> float | None:
         """Return sensor state."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup state
                 if plant["plantDetail"]["totalSellElec"] is not None:
@@ -571,7 +571,7 @@ class ESolarSensorPlantBatteryChargeEnergy(ESolarSensor):
 
     async def async_update(self) -> None:
         """Get the latest data and updates the states."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup static attributes
                 self._attr_available = True
@@ -588,7 +588,7 @@ class ESolarSensorPlantBatteryChargeEnergy(ESolarSensor):
     @property
     def native_value(self) -> float | None:
         """Return sensor state."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup state
                 charge = float(0)
@@ -629,7 +629,7 @@ class ESolarSensorPlantBatteryDischargeEnergy(ESolarSensor):
 
     async def async_update(self) -> None:
         """Get the latest data and updates the states."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup static attributes
                 self._attr_available = True
@@ -646,7 +646,7 @@ class ESolarSensorPlantBatteryDischargeEnergy(ESolarSensor):
     @property
     def native_value(self) -> float | None:
         """Return sensor state."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup state
                 discharge = float(0)
@@ -688,7 +688,7 @@ class ESolarSensorPlantBatterySoC(ESolarSensor):
         """Get the latest data and updates the states."""
         installed_power = float(0)
         available_power = float(0)
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] != self._plant_name:
                 continue
             # Setup static attributes
@@ -716,7 +716,7 @@ class ESolarSensorPlantBatterySoC(ESolarSensor):
         """Return sensor state."""
         installed_power = float(0)
         available_power = float(0)
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] != self._plant_name:
                 continue
             # Setup state
@@ -782,7 +782,7 @@ class ESolarInverterEnergyTotal(ESolarSensor):
 
     async def async_update(self) -> None:
         """Get the latest data and updates the states."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup static attributes
                 self._attr_available = True
@@ -818,7 +818,7 @@ class ESolarInverterEnergyTotal(ESolarSensor):
     def native_value(self) -> float | None:
         """Return sensor state."""
         value = None
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] != self._plant_name:
                 continue
             if "kitList" in plant and plant["kitList"] is not None:
@@ -929,7 +929,7 @@ class ESolarInverterPower(ESolarSensor):
 
     async def async_update(self) -> None:
         """Get the latest data and updates the states."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup static attributes
                 self._attr_available = True
@@ -950,7 +950,7 @@ class ESolarInverterPower(ESolarSensor):
     def native_value(self) -> float | None:
         """Return sensor state."""
         value = None
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] != self._plant_name:
                 continue
             # Setup dynamic attributes
@@ -1129,7 +1129,7 @@ class ESolarInverterBatterySoC(ESolarSensor):
 
     async def async_update(self) -> None:
         """Get the latest data and updates the states."""
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] != self._plant_name:
                 continue
             # Setup static attributes
@@ -1157,7 +1157,7 @@ class ESolarInverterBatterySoC(ESolarSensor):
         """Return sensor state."""
         # Setup state
         value = None
-        for plant in self._coordinator.data["plantList"]:
+        for plant in self._coordinator.data:
             if plant["plantName"] != self._plant_name:
                 continue
             if "kitList" not in plant or plant["kitList"] is None:

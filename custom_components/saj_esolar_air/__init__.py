@@ -527,4 +527,4 @@ def get_data(
             _LOGGER.exception("Unexpected response: %s", plant_info)
             raise UnknownError
 
-    return cast(ESolarResponse, {"plantList": plant_info})
+    return plant_info
