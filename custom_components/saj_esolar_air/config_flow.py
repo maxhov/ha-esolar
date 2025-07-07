@@ -190,11 +190,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     vol.Required(
                         CONF_PV_GRID_DATA,
                         default=self.config_entry.options.get(CONF_PV_GRID_DATA),
-                    ): bool,
-                    vol.Required(
-                        CONF_MONITORED_SITES,
-                        default=self.config_entry.options.get(CONF_MONITORED_SITES),
-                    ): str
+                    ): bool
                 }
             ),
         )
