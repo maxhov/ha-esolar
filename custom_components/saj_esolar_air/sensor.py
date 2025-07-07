@@ -319,7 +319,7 @@ class ESolarSensorPlant(ESolarSensor):
                     self._attr_extra_state_attributes[P_TYPE] = P_TYPE_BLEND
                 if plant["type"] == 3:
                     self._attr_extra_state_attributes[P_TYPE] = P_TYPE_AC_COUPLING
-                self._attr_extra_state_attributes[P_POWER] = float(plant["systempower"])
+                self._attr_extra_state_attributes[P_POWER] = float(plant["systemPower"])
                 self._attr_extra_state_attributes[P_CURRENCY] = plant["currency"]
 
                 # Setup state
@@ -351,7 +351,7 @@ class ESolarSensorPlant(ESolarSensor):
                 self._attr_extra_state_attributes[P_TREES] = plant[
                     "totalPlantTreeNum"
                 ]
-                self._attr_extra_state_attributes[P_TOTAL_E] = plant["totalElectricity"]
+                self._attr_extra_state_attributes[P_TOTAL_E] = plant["totalEnergy"]
 
                 # Setup state
                 if plant["runningState"] == 1:
@@ -404,7 +404,7 @@ class ESolarSensorPlantTotalEnergy(ESolarSensor):
                 self._attr_extra_state_attributes[P_UID] = plant["plantUid"]
 
                 # Setup state
-                self._attr_native_value = float(plant["totalElectricity"])
+                self._attr_native_value = float(plant["totalEnergy"])
 
     @property
     def native_value(self) -> float | None:
@@ -413,7 +413,7 @@ class ESolarSensorPlantTotalEnergy(ESolarSensor):
             if plant["plantName"] == self._plant_name:
                 # Setup dynamic attributes
                 self._attr_extra_state_attributes[P_TODAY_E] = float(
-                    plant["todayElectricity"]
+                    plant["todayEnergy"]
                 )
                 self._attr_extra_state_attributes[P_CURRENT_POWER] = float(
                     plant["nowPower"]
@@ -428,7 +428,7 @@ class ESolarSensorPlantTotalEnergy(ESolarSensor):
                     self._attr_extra_state_attributes[P_PEAK_POWER] = None
 
                 # Setup state
-                value = float(plant["totalElectricity"])
+                value = float(plant["totalEnergy"])
 
         return value
 
