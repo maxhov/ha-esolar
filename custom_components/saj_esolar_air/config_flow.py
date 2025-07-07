@@ -46,7 +46,7 @@ class ESolarHub:
         """Download and list available inverters."""
         try:
             session = esolar_web_authenticate(region, username, password)
-            self.plant_list = web_get_plant_list(region, session).get("plantList")
+            self.plant_list = web_get_plant_list(region, session)
         except requests.exceptions.HTTPError:
             _LOGGER.error("Login: HTTPError")
             return False
