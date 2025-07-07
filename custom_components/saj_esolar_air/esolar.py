@@ -184,8 +184,8 @@ def web_get_plant_list(region, token, requested_plant_list=None):
         response.raise_for_status()
         plant_list = response.json()["data"]["list"]
         if requested_plant_list is not None:
-            for plant in plant_list["plantList"]:
-                if plant["plantname"] in requested_plant_list:
+            for plant in plant_list:
+                if plant["plantName"] in requested_plant_list:
                     output_plant_list.append(plant)
             return {"status": plant_list["status"],
                     "plantList": output_plant_list}
