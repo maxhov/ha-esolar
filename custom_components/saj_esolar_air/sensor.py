@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import datetime
-from datetime import timedelta
 import logging
+from datetime import timedelta
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -17,7 +17,7 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from . import ESolarCoordinator, ESolarResponse
+from . import ESolarCoordinator
 from .const import (
     B_B_LOAD,
     B_BACKUP_POWER_W,
@@ -197,7 +197,7 @@ async def async_setup_entry(
                 )
 
             if use_inverter_sensors:
-                for inverter in plant["plantDetail"]["snList"]:
+                for inverter in plant["snList"]:
                     _LOGGER.debug(
                         "Setting up ESolarInverterEnergyTotal sensor for %s and inverter %s",
                         plant["plantName"],
@@ -335,19 +335,20 @@ class ESolarSensorPlant(ESolarSensor):
     @property
     def native_value(self) -> str | None:
         """Return sensor state."""
+        value = None
         for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup dynamic attributes
-                if (plant["plantDetail"]["type"]) == 0:
-                    self._attr_extra_state_attributes[P_INCOME] = plant["plantDetail"][
+                if (plant["type"]) == 0:
+                    self._attr_extra_state_attributes[P_INCOME] = plant[
                         "income"
                     ]
                 else:
                     self._attr_extra_state_attributes[P_INCOME] = None
-                self._attr_extra_state_attributes[P_CO2] = plant["plantDetail"][
+                self._attr_extra_state_attributes[P_CO2] = plant[
                     "totalReduceCo2"
                 ]
-                self._attr_extra_state_attributes[P_TREES] = plant["plantDetail"][
+                self._attr_extra_state_attributes[P_TREES] = plant[
                     "totalPlantTreeNum"
                 ]
                 self._attr_extra_state_attributes[P_TOTAL_E] = plant["totalElectricity"]
@@ -359,8 +360,6 @@ class ESolarSensorPlant(ESolarSensor):
                     value = "Alarm"
                 elif plant["runningState"] == 3:
                     value = "Offline"
-                else:
-                    value = None
 
         return value
 
@@ -471,9 +470,9 @@ class ESolarSensorPlantBatteryBuyEnergy(ESolarSensor):
                 self._attr_extra_state_attributes[P_UID] = plant["plantUid"]
 
                 # Setup state
-                if plant["plantDetail"]["totalBuyElec"] is not None:
+                if plant["totalBuyElec"] is not None:
                     self._attr_native_value = float(
-                        plant["plantDetail"]["totalBuyElec"]
+                        plant["totalBuyElec"]
                     )
 
     @property
@@ -482,8 +481,8 @@ class ESolarSensorPlantBatteryBuyEnergy(ESolarSensor):
         for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup state
-                if plant["plantDetail"]["totalBuyElec"] is not None:
-                    value = float(plant["plantDetail"]["totalBuyElec"])
+                if plant["totalBuyElec"] is not None:
+                    value = float(plant["totalBuyElec"])
 
         return value
 
@@ -525,9 +524,9 @@ class ESolarSensorPlantBatterySellEnergy(ESolarSensor):
                 self._attr_extra_state_attributes[P_UID] = plant["plantUid"]
 
                 # Setup state
-                if plant["plantDetail"]["totalSellElec"] is not None:
+                if plant["totalSellElec"] is not None:
                     self._attr_native_value = float(
-                        plant["plantDetail"]["totalSellElec"]
+                        plant["totalSellElec"]
                     )
 
     @property
@@ -536,8 +535,8 @@ class ESolarSensorPlantBatterySellEnergy(ESolarSensor):
         for plant in self._coordinator.data:
             if plant["plantName"] == self._plant_name:
                 # Setup state
-                if plant["plantDetail"]["totalSellElec"] is not None:
-                    value = float(plant["plantDetail"]["totalSellElec"])
+                if plant["totalSellElec"] is not None:
+                    value = float(plant["totalSellElec"])
 
         return value
 
@@ -697,7 +696,7 @@ class ESolarSensorPlantBatterySoC(ESolarSensor):
             self._attr_extra_state_attributes[P_UID] = plant["plantUid"]
 
             # Setup state
-            for inverter in plant["plantDetail"]["snList"]:
+            for inverter in plant["snList"]:
                 if "kitList" not in plant or plant["kitList"] is None:
                     continue
                 for kit in plant["kitList"]:
@@ -720,7 +719,7 @@ class ESolarSensorPlantBatterySoC(ESolarSensor):
             if plant["plantName"] != self._plant_name:
                 continue
             # Setup state
-            for inverter in plant["plantDetail"]["snList"]:
+            for inverter in plant["snList"]:
                 if "kitList" not in plant or plant["kitList"] is None:
                     continue
                 for kit in plant["kitList"]:
