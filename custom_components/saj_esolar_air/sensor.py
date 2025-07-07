@@ -197,7 +197,7 @@ async def async_setup_entry(
                 )
 
             if use_inverter_sensors:
-                for inverter in plant["snList"]:
+                for inverter in plant["deviceSnList"]:
                     _LOGGER.debug(
                         "Setting up ESolarInverterEnergyTotal sensor for %s and inverter %s",
                         plant["plantName"],
@@ -696,7 +696,7 @@ class ESolarSensorPlantBatterySoC(ESolarSensor):
             self._attr_extra_state_attributes[P_UID] = plant["plantUid"]
 
             # Setup state
-            for inverter in plant["snList"]:
+            for inverter in plant["deviceSnList"]:
                 if "kitList" not in plant or plant["kitList"] is None:
                     continue
                 for kit in plant["kitList"]:
@@ -719,7 +719,7 @@ class ESolarSensorPlantBatterySoC(ESolarSensor):
             if plant["plantName"] != self._plant_name:
                 continue
             # Setup state
-            for inverter in plant["snList"]:
+            for inverter in plant["deviceSnList"]:
                 if "kitList" not in plant or plant["kitList"] is None:
                     continue
                 for kit in plant["kitList"]:
