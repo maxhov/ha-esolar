@@ -6,11 +6,9 @@ from typing import Any
 
 import requests
 import voluptuous as vol
-
 from homeassistant import config_entries
 from homeassistant.const import CONF_REGION, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
 
@@ -88,7 +86,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ):
         """Handle the initial step. Username and password."""
         if user_input is None:
             return self.async_show_form(
@@ -129,7 +127,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_sites(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ):
         """Handle the second step. Select which sites to use."""
 
         errors = {}
@@ -169,7 +167,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ):
         """Manage the options."""
         if user_input is not None:
             user_input.update(
